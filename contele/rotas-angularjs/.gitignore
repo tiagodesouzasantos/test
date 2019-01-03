@@ -1,0 +1,4 @@
+node_modules
+plataforms
+cmd.exe
+services/v1/server/*

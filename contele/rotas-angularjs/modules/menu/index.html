@@ -1,0 +1,64 @@
+<!-- <section id="menu" ng-controller="menuController"> -->
+<section id="menu" ng-init="init()">
+    <div class="main">
+        <md-toolbar>
+            <div class="menu">
+                <i class="material-icons" ng-click="toogleSideNav('left')">menu</i>
+            </div>
+            <!-- <div class="filter">
+                <i class="material-icons" ng-click="toogleSideNav('right')">filter_list</i>
+            </div> -->
+        </md-toolbar>
+    </div>
+
+    <div flex layout="row">
+        <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
+            <md-toolbar class="md-theme-indigo">
+                <div layout="row" flex="100" layout-wrap>                    
+                    <div class="menu" flex="20" layout="row" layout-align="end">
+                        <i class="material-icons closeMenu" ng-click="toogleSideNav('left')">arrow_back</i>
+                    </div>
+                    <div flex="100" layout="column" class="user-info">
+                        <p class="name">{{user.name}}</p>
+                        <p class="email">{{user.email}}</p>
+                    </div>
+                </div>                
+            </md-toolbar>
+            <md-menu-content>
+                <md-menu-item>
+                    <md-button ng-click="goto('home')"><i class="material-icons">home</i>
+                        <p>Home</p>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-disabled="true" ng-click="goto('configs')"><i class="material-icons">directions_run</i>
+                        <p>Treinamentos</p>
+                    </md-button>
+                </md-menu-item>
+                <md-divider></md-divider>
+                <md-menu-item>
+                    <md-button ng-disabled="true" ng-click="goto('configs')"><i class="material-icons">settings</i>
+                        <p>Meus dados</p>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-click="goto('exit')"><i class="material-icons">exit_to_app</i>Sair</md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-sidenav>
+
+        <div layout="column" flex>
+            <section id="content" class="container" ui-view="main"></section>
+        </div>
+
+        <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+            <md-toolbar class="md-theme-indigo">
+                <div class="filter">
+                    <i class="material-icons closeMenu" ng-click="toogleSideNav('right')">arrow_back</i>
+                </div>
+            </md-toolbar>
+            <md-content layout-padding>
+            </md-content>
+        </md-sidenav>
+    </div>
+</section>

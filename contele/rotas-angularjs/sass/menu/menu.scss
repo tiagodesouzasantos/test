@@ -1,0 +1,89 @@
+#menu {
+    .main {
+        display: flex;
+        .filter {
+            right: 0;
+        }
+    }
+    md-sidenav{
+        max-width: 280px;
+    }
+    
+    .filter {
+        padding: 10px;
+        transition-duration: .2s;
+        position: absolute;
+        .material-icons {
+            font-size: 40px;
+            opacity: .5;
+            &:hover {
+                cursor: pointer;
+                opacity: 3;
+            }
+        }
+        .closeMenu {
+            float: left;
+            transform: rotate(180deg);
+        }
+    }
+    .menu {
+        transition-duration: .2s;
+        padding: 10px;
+        .material-icons {
+            font-size: 40px;
+            // font-size: 2em;
+            opacity: .5;
+            &:hover {
+                cursor: pointer;
+                opacity: 3;
+            }
+        }
+        .closeMenu {
+            float: right;
+        }
+    }
+    
+    .md-theme-indigo{
+        height: 21vh;
+        .user-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 30px;
+            margin: 15px 0 0 15px;
+        }
+        .user-info{
+            margin:0 10px;
+            .name{
+                font-size: 15px;
+                font-weight: 400;
+                color: #fff;
+            }
+            .email{
+                font-size: 11px;                
+                color: #ececec;
+            }
+            .pontos{
+                font-size: 11px;
+                color: #ececec;
+                margin-left: 5px;
+            }
+            i{ color: #fff;}
+        }
+    }
+    
+    md-menu-content {
+        max-height: 100vh;
+    }
+    md-menu-item {
+        .md-button span {
+            padding-left: 10px;
+        }
+        i {
+            vertical-align: sub;
+            color: #03a9f4;
+        }
+    }
+    fieldset {
+        border-color: rgba(7, 178, 255, 0.1);
+    }
+}

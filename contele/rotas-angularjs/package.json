@@ -1,0 +1,38 @@
+{
+    "name": "band",
+    "version": "2.0.0",
+    "description": "QuickStart",
+    "main": "gulpfile.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "AngularJS",
+        "Sass",
+        "Gulp"
+    ],
+    "author": "Tiago Dev.",
+    "license": "AGPL-3.0",
+    "devDependencies": {
+        "angular-chart.js": "^1.1.1",
+        "browser-sync": "^2.18.13",
+        "gulp": "^3.9.1",
+        "gulp-autoprefixer": "^4.0.0",
+        "gulp-bytediff": "^1.0.0",
+        "gulp-cli": "^1.4.0",
+        "gulp-concat": "^2.6.1",
+        "gulp-cssmin": "^0.2.0",
+        "gulp-imagemin": "^3.4.0",
+        "gulp-ng-annotate": "^2.1.0",
+        "gulp-plumber": "^1.2.0",
+        "gulp-rename": "^1.2.2",
+        "gulp-sass": "^3.2.1",
+        "gulp-uglify": "^3.0.0",
+        "gulp-wait": "0.0.2",
+        "gulp-webserver": "^0.9.1"
+    },
+    "dependencies": {
+        "angular-i18n": "^1.6.10",
+        "angular-material-calendar": "^0.2.14"
+    }
+}

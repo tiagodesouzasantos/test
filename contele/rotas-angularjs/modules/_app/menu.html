@@ -1,0 +1,20 @@
+<!-- <section id="menu" ng-controller="menuController"> -->
+<section id="menu" ng-init="init()">
+    <div class="main">
+        <img src="img/truck.png" class="logo" alt="">        
+        <a ng-if="listMenusAdmin.length > 1" ng-repeat="(key, menu) in listMenusAdmin" href="#/{{menu.menu}}" class="{{activeClass==menu.menu?'active':''}}" ng-click="setActiveState($e);setSubMenuUrl(menu.menu);">{{menu.desc}}</a>
+    </div>
+    <div class="sub">
+        <div class="line"></div>
+        <md-content ng-if="listSubMenu.length > 1">
+            <md-tabs md-stretch-tabs="always" md-no-ink md-dynamic-height md-border-bottom md-selected="subItem">              
+              <md-tab  ng-repeat="subMenu in listSubMenu" label="{{subMenu.desc}}"  ng-click="stateGo(subMenu.action)"></md-tab>
+            </md-tabs>
+        </md-content>
+    </div>
+    <div class="exit">
+        <i class="material-icons" ng-click="logOut()">exit_to_app</i>
+    </div>
+</section>
+
+<section class="container" ui-view="main"></section>

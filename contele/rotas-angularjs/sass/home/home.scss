@@ -1,0 +1,68 @@
+#home {
+    max-height: 100%;
+    position: relative;
+    height: calc(100vh - 75px);
+    overflow: scroll;
+    overflow-y: hidden;
+    padding: 10px;
+    .calendarSize {
+        height: calc(100vh - 75px);
+    }
+    .descTreinamento{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 53vh;
+    }
+    md-card {
+        margin-left: 2%;
+        span.md-headline {
+            background-color: #03a9f4;
+            padding: 0 8px;
+        }
+    }
+    md-card md-card-title {
+        padding: 0 12px;
+    }
+    .headerList {
+        background-color: rgba(158, 158, 158, 0.2);
+        font-weight: bold;
+    }
+    .md-list-users-text {
+        button {
+            padding-top: 10px
+        }
+    }
+    .md-subheader-inner {
+        display: block;
+        padding: 5px 0px 5px 15px!important;
+    }
+    .eventTag {
+        border-bottom: solid 2px #FFF;
+        text-align: center;
+        background-color: rgb(71, 198, 255);
+        border-radius: 5px;
+        height: 15px;
+        font-size: 13px;
+        padding: 0 5px;
+        margin: auto;
+    }
+    .dayContent {
+        padding: 0;
+    }
+    .event-details {
+        overflow: auto;
+        overflow-x: hidden;
+        height: calc(100vh - 150px);
+    }
+}
+
+#lista-vinculados {
+    overflow: hidden;
+    height: 80vh;
+    .lista {
+        height: 58vh; 
+        overflow: auto;
+        overflow-x: hidden;
+    }
+}

@@ -1,0 +1,55 @@
+/***********************************************************/
+/***********************Book Antiqua************************/
+/***********************************************************/
+@font-face {
+    font-family: "Book Antiqua";
+    src: url("../fonts/book_antiqua_regular.ttf");
+}
+
+@font-face {
+    font-family: "Book Antiqua";
+    src: url("../fonts/book_antiqua_negrito.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Book Antiqua";
+    src: url("../fonts/book_antiqua_italico.ttf");    
+    font-style: italic, oblique;
+}
+
+@font-face {
+    font-family: "Book Antiqua";
+    src: url("../fonts/book_antiqua_negrito_italico.ttf");
+    font-weight: bold;
+    font-style: italic, oblique;
+}
+
+/***********************************************************/
+/***********************Calibri*****************************/
+/***********************************************************/
+
+@font-face {
+    font-family: "Calibri";
+    src: url("../fonts/calibri_regular.ttf");
+}
+
+@font-face {
+    font-family: "Calibri";
+    src: url("../fonts/calibri_negrito.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Calibri";
+    src: url("../fonts/calibri_italico.ttf");
+    font-style: italic, oblique;
+}
+
+@font-face {
+    font-family: "Calibri";
+    src: url("../fonts/calibri_negrito_italico.ttf");
+    font-weight: bold;
+    font-style: italic, oblique;
+}
+

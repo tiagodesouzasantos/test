@@ -1,0 +1,107 @@
+#treinamento{
+    max-height: 100%;
+    position: relative;
+    height: calc(100vh - 75px);
+    overflow: scroll;
+    overflow-y: hidden;
+    padding: 10px;
+    md-card {
+        margin-left: 2%;
+        span.md-headline {
+            background-color: #03a9f4;
+            padding: 0 8px;
+        }
+    }
+    md-tabs{
+        height: calc(100vh - 78px);
+    }
+    md-card md-card-title{
+        padding: 0px 15px 5px;
+    }
+    .print{
+        margin-top: 15px;
+    }
+    
+}
+
+#certificado {
+    .page {
+        width: calc(842px); // height: calc(558.28px);
+        height: calc(595px); // margin: auto;
+    }
+    .page1{
+        font-family: "Book Antiqua";
+    }
+    .header {
+        height: 60px;
+        margin-top: 20px;
+    }
+    .title {
+        font-size: 30px; 
+    }
+    .text-center {
+        text-align: center;
+    }
+    .footer {
+        .green-line {
+            background-color: $verdeBand;
+            height: 28px;
+        }
+        .blue-line {
+            background-color: $azulBand;
+            height: 28px;
+        }
+    }
+    .medal {
+        width: 150px;
+            // margin-left: 20px;
+    }
+    .page2{
+        font-family: "Calibri";        
+    }
+    table{
+        th{
+            background-color: rgb(155, 187, 89);
+            color: #fff;
+            padding: 5px;
+        }
+        td{
+            padding: 3px;
+        }       
+    }
+    .alter-row{
+        background-color: $verdeBandClaro;
+    }
+}
+
+#avaliacao{
+    .resultado-titulo{
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 32px;
+        padding: 0 8px;
+    }
+    .aproveitamento{
+        font-size: small;
+        color: #b1abab;
+        padding: 5px;
+    }
+
+    .respostas{
+        margin: 0 10px 0 30px;
+    }
+    .blue-btn{
+        background-color:$azulBtn;
+    }    
+    .red-btn{
+        background-color: $vermelhoBand;
+    }
+    .green-btn{
+        background-color: $verdeBand;
+    }
+    .timer{
+        font-size: smaller;
+        font-weight: bold;
+    }
+    
+}

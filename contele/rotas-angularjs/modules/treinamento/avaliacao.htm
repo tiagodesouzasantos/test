@@ -1,0 +1,55 @@
+<md-content id="avaliacao" layout="row" layout-align="space-around center" flex="100" layout-wrap> 
+    <div flex="100" flex-xs="100" layout-align="center center" layout="row">
+        <md-button flex="30" ng-click="startTest();" ng-disabled="avaliacao.resultado.aproveitamento" layout-align="center center" layout="row" ng-class="{'green-btn':!avaliacao.resultado.aproveitamento}">
+            <i class="material-icons">play_circle_outline</i> Iniciar teste
+        </md-button>
+    </div>
+    
+
+    <div ng-show="perguntaLiberada[$index] && (!avaliacao.resultado.aproveitamento)" flex="30" flex-xs="100" ng-repeat="pergunta in avaliacao.perguntas">
+        <md-card id="pergunta{{$index}}">
+            <md-card-title>
+                <md-card-title-text flex="100" layout="row">
+                    <span class="md-subhead" flex="75" layout="row" layout-wrap>
+                        {{$index+1}}. {{pergunta.questao}}
+                    </span>
+                    <span class="md-subhead" flex="25" layout="row" layout-align="end">
+                        <i ng-if="pergunta.tempo>0" class="material-icons">timer</i>
+                        <i ng-if="pergunta.tempo<=0" class="material-icons">timer_off</i>
+                        <p class="timer" flex="30" layout="row" layout-align="center">{{pergunta.tempo}}</p>
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+            <div class="respostas">
+                <md-radio-group ng-model="avaliacaoRespostas[$index]">
+                    <md-radio-button ng-value="resposta.id" ng-repeat="resposta in pergunta.respostas">{{resposta.desc}}</md-radio-button>
+                </md-radio-group>
+            </div>
+            
+            <md-button ng-init="botaoResposta[$index] = 'blue-btn'" flex="100" layout="row" layout-align="center center" class="{{botaoResposta[$index]}}" ng-click="enviarResposta(pergunta,avaliacaoRespostas,$index)"> 
+                <md-progress-circular ng-if="botaoResposta[$index]=='loading'" class="md-accent md-hue-1" md-diameter="20px"></md-progress-circular>
+                {{botaoResposta[$index]=='blue-btn'?'Enviar':''}}                
+                <i ng-if="botaoResposta[$index]=='green-btn'" class="material-icons">near_me</i>                 
+            </md-button>
+        </md-card>
+    </div>  
+
+    <div ng-show="avaliacao.resultado.aproveitamento" flex="30" flex-xs="100" layout-wrap>
+        <md-card >
+            <span flex="100" class="blue-btn resultado-titulo" ng-class="{'blue-btn':avaliacao.resultado.aprovado,'red-btn':!avaliacao.resultado.aprovado}" layout-align="center" layout="row">
+                {{avaliacao.resultado.aprovado?'Aprovado':'Reprovado'}}
+            </span>            
+            <div layout="row" flex="100" layout-align="center center">
+                <img class="medal" flex="30" src="/media/celo.png" />
+            </div>
+            <div layout="row" flex="100" layout-align="center center">
+                <span flex="100" layout="row" layout-align="center center" class="aproveitamento">Você teve {{avaliacao.resultado.aproveitamento}}% de aproveitamento no teste aplicado!</span>
+            </div>
+            <div layout="row" flex="100" layout-align="center center">
+                <md-button ng-show="avaliacao.resultado.aprovado" flex="60" layout="row" layout-align="center center" class="blue-btn" ng-click="openCertificado()">
+                    <i class="material-icons">open_in_new</i> Pegar certificado!
+                </md-button>
+            </div>
+        </md-card>
+    </div>
+</md-content>

@@ -1,0 +1,122 @@
+// INIT CONFIG
+* {
+    margin: 0;
+    outline: none;
+     ::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+     ::-webkit-scrollbar-track {
+        background: rgb(240, 240, 240);
+    }
+     ::-webkit-scrollbar-thumb {
+        background: #555;
+    }
+}
+
+body {
+    cursor: default;
+    overflow: hidden;
+}
+
+$defaultBlue: #06b1ee;
+$defaultBlueHover: #11bffd;
+$defaultTableBorder: 1px solid #DDD;
+
+$vermelhoBand: #d14836;
+$verdeBandClaro:rgb(239, 243, 234);
+$verdeBand:rgb(135, 188, 92);
+$azulBand: rgb(0, 122, 192);
+$azulBtn: rgb(3, 169, 244);
+
+.blue {
+    color: $defaultBlue;
+}
+
+%absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+%default-button {
+    background: $defaultBlue;
+    border: 1px solid;
+    padding: 6px 18px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 3px;
+    color: #fff;
+    transition-duration: .2s;
+    &:hover {
+        background-color: $defaultBlueHover;
+        color: #FFF;
+        border: 1px solid $defaultBlueHover;
+    }
+}
+
+%default-float-button {
+    border-radius: 50%;
+    padding: 15px;
+    border: 1px solid $defaultBlue;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
+}
+
+#content {
+    position: relative;
+    // background: #f9f9f9;
+    // padding: 0 20px;
+    // height: calc(100vh - 145px);
+    // overflow-y: scroll;
+}
+
+.container {
+    background: #eae7de;
+    // background: #e6e5e0;
+}
+
+md-checkbox.md-checked .md-icon:after {
+    display: none;
+}
+
+button.md-primary.md-raised {
+    color: #FFF!important;
+}
+
+.loading-btn{
+    margin: auto;
+}
+
+.loading-main-div {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border-radius: 3px;
+    z-index: 9999999;
+    opacity: 0.7;
+    .loading-child-div {
+        height: 100%;
+    }
+}
+
+.search {
+    order: 0!important;
+}
+
+.md-button {
+    min-width: 50px!important;
+}
+
+// BRANCHES
+@import 'fonts/fonts.scss';
+@import 'menu/menu.scss';
+@import 'treinamento/treinamento.scss';
+@import 'home/home.scss';
+@import 'initial/initial.scss';

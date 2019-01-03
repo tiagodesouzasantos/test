@@ -1,0 +1,35 @@
+<section id="initial" ng-init="init()">
+    <div class="login-field-set" layout="row" layout-align="center center" layout-wrap>
+        <div flex="100" layout="row" layout-align="center center">
+            <img flex="5" src="media/map_route.png" alt="">
+        </div>
+        <md-card flex-xs="90" flex-gt-xs="30">
+            <md-toolbar>
+                <div class="md-toolbar-tools" layout="row">
+                    <h2><span>rotasAngularJs</span></h2>
+                    <i class="material-icons">help_outline</i>
+                </div>
+            </md-toolbar>
+            <md-card-content>
+                <form name="formLoginAd">
+                    <md-input-container class="md-block">
+                        <label>E-mail</label>
+                        <input type="email" name="login" ng-model="login.email" placeholder="Digite seu usuário" title="Digite seu usuário" required="" />
+                        <div ng-messages="formLoginAd.login.$error" role="alert" multiple="">
+                            <div ng-message="required" class="my-message">Insira um e-mail valido!</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Senha</label>
+                        <input type="password" name="password" ng-model="login.password" placeholder="Digite sua senha" title="Digite sua senha" required="" md-maxlength="16" />
+                        <div ng-messages="formLoginAd.password.$error" role="alert" multiple="">
+                            <div ng-message="required" class="my-message">Insira sua senha!</div>
+                            <!-- <div ng-message="md-maxlength" class="my-message">Too long.</div> -->
+                        </div>
+                    </md-input-container>
+                    <md-button ng-disabled="!formLoginAd.$valid" ng-click="submit()" class="md-raised md-primary">&nbsp Login &nbsp</md-button>
+                </form>
+            </md-card-content>
+        </md-card>
+    </div>
+</section>
