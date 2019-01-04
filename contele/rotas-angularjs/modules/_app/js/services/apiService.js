@@ -1,5 +1,5 @@
 angular.module('rotasAngularJs')
-    .service('api', function(session, $q, $http, $state, appUrls, msgsService) {
+    .service('api', function(session, $q, $http, appUrls, msgsService) {
         return {
             post: function(url, params) {
                 var postProm = $q.defer();
@@ -32,13 +32,14 @@ angular.module('rotasAngularJs')
                 var getProm = $q.defer();
                 var authData = JSON.parse(session.getData('authData'));
                 var url = appUrls.getUrl(url) + '?token=' + authData.token.token;
+                var apiS = this;
                 $http.get(url).then(function(getResult) {
                     getProm.resolve(getResult.data);
                     console.log('getResult', getResult);
                 }).catch(function(getError) {
                     console.log('getError', getError);
-                    var getErro = getError.data.error;
-                    getProm.reject(msgsService.getMsg(getErro.module, getErro.msg));
+                    var errorMsg = apiS.getErrors(getError.status, getError.data);
+                    getProm.reject(errorMsg);
                 });
                 return getProm.promise;
             },
@@ -56,18 +57,20 @@ angular.module('rotasAngularJs')
                     });
                 return putProm.promise;
             },
-            getHeader: function() {
+            getErrors: function(status, data) {
                 try {
-                    var tokenData = JSON.parse(session.getData('tokenData'));
-                    var header = {
-                        "Content-Type": "application/json",
-                        "Authorization": tokenData.token_type + " " + tokenData.access_token
+                    var msg;
+                    switch (status) {
+                        case 401:
+                            msg = msgsService.getMsg('app', 11);
+                            break;
+                        default:
+                            msg = msgsService.getMsg('app', 3);
                     }
-                    console.log(header);
-                    return header;
+                    return msg;
                 } catch (error) {
-                    console.log('getHeaderError', error);
-                    return { "Content-Type": "application/json" };
+                    console.log('getErrors', error);
+                    return msgsService.getMsg('app', 3);
                 }
             }
         }

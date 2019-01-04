@@ -67,18 +67,18 @@ gulp.task('app', function() {
         .pipe(concat('app.js', { newLine: ';' }))
         .pipe(ngAnnotate({ add: true }))
         .pipe(plumber.stop())
-        .pipe(gulp.dest('js/src/'));
+        .pipe(gulp.dest('js/dist/'));
 });
 
 gulp.task('prod', ['app'], function() {
-    return gulp.src('js/src/app.js')
+    return gulp.src('js/dist/app.js')
         .pipe(plumber())
         .pipe(bytediff.start())
         .pipe(uglify({ mangle: true }))
         .pipe(bytediff.stop())
         .pipe(rename('app.min.js'))
         .pipe(plumber.stop())
-        .pipe(gulp.dest('js/src/'));
+        .pipe(gulp.dest('js/dist/'));
 });
 
 gulp.task('watch', ['prod'], function() {
@@ -93,7 +93,7 @@ gulp.task('server', function() {
     });
 
     gulp.watch("css/*.css").on('change', browserSync.reload);
-    gulp.watch("js/src/*.js").on('change', browserSync.reload);
+    gulp.watch("js/dist/*.js").on('change', browserSync.reload);
     gulp.watch("js/*.js").on('change', browserSync.reload);
     gulp.watch("./*.html").on('change', browserSync.reload);
     gulp.watch("./modules/**/*.html").on('change', browserSync.reload);

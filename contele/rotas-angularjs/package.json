@@ -16,7 +16,7 @@
     "devDependencies": {
         "angular-chart.js": "^1.1.1",
         "browser-sync": "^2.18.13",
-        "gulp": "^4.0.0",
+        "gulp": "^3.9.0",
         "gulp-autoprefixer": "^6.0.0",
         "gulp-bytediff": "^1.0.0",
         "gulp-cli": "^2.0.1",

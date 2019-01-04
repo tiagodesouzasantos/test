@@ -26,7 +26,8 @@ angular.module('rotasAngularJs')
                             "6": "Preencha todos os campos corretamente!",
                             "7": "Tipo de arquivo inválido!",
                             "8": "Não foram encontrados dados para os filtros selecionados!",
-                            "10": "Nenhum dado encontrado!"
+                            "10": "Nenhum dado encontrado!",
+                            "11": "Sua sessão expirou, por favor faça o login novamente!"
                         }
                     },
                     "ingles": {

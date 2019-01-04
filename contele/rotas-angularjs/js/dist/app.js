@@ -142,19 +142,28 @@ angular.module('home', ['ksSwiper', 'dbServer']);angular.module('initial')
             }
         }]);;angular.module('home')
     .controller('homeController',
-        ["$scope", "homeService", "dialogService", "$rootScope", "session", "$mdDialog", "msgsService", function($scope, homeService, dialogService, $rootScope, session, $mdDialog, msgsService) {
+        ["$scope", "homeService", "dialogService", "$rootScope", "session", "$mdDialog", "msgsService", "auth", function($scope, homeService, dialogService, $rootScope, session, $mdDialog, msgsService, auth) {
             $scope.init = function() {
                 $rootScope.showLoading = true;
                 $scope.loadData();
             }
 
             $scope.loadData = function() {
-                homeService.getListRotas().then(function(rotasResult) {
+                homeService.getListRotas().then(function(routesResult) {
                     $rootScope.showLoading = false;
-                    $scope.malhasRotas = rotasResult;
-                    console.log('rotasResult', rotasResult);
+                    $scope.routesMesh = homeService.filterOptions(routesResult);
+                    console.log('routesResult', routesResult);
                 }).catch(function(rotasError) {
                     console.log('rotasError', rotasError);
+                    $rootScope.showLoading = false;
+                    var confirmeJson = {
+                        "title": "Problemas!",
+                        "content": rotasError,
+                        "buttonOk": "Ok"
+                    };
+                    dialogService.confirm(confirmeJson).then(function(confirm) {
+                        auth.logout();
+                    });
                 });
             }
         }]);;angular.module('menu')
@@ -204,16 +213,18 @@ angular.module('home', ['ksSwiper', 'dbServer']);angular.module('initial')
                     }).catch(function(rotasError) {
                         rotasProm.reject(rotasError);
                     });
-                    // $timeout(function() {
-                    // }, 100);
                     return rotasProm.promise;
                 },
-                getTreinamentosDoDia: function() {
-                    var doDiaProm = $q.defer();
-                    $timeout(function() {
-                        doDiaProm.resolve(treinamentosFake);
-                    }, 100);
-                    return doDiaProm.promise;
+                filterOptions: function(routesMash) {
+                    for (var i = 0; i < routesMash.length; i++) {
+                        var spots = [];
+                        routesMash[i].routes.forEach(function(value, key) {
+                            spots.push(value.spot_one);
+                            spots.push(value.spot_two);
+                        });
+                        routesMash[i].spots = spots.filter((v, i, a) => a.indexOf(v) === i)
+                    }
+                    return routesMash;
                 }
             }
         }]
@@ -431,7 +442,8 @@ angular.module('home', ['ksSwiper', 'dbServer']);angular.module('initial')
                             "6": "Preencha todos os campos corretamente!",
                             "7": "Tipo de arquivo inválido!",
                             "8": "Não foram encontrados dados para os filtros selecionados!",
-                            "10": "Nenhum dado encontrado!"
+                            "10": "Nenhum dado encontrado!",
+                            "11": "Sua sessão expirou, por favor faça o login novamente!"
                         }
                     },
                     "ingles": {
@@ -590,19 +602,18 @@ angular.module('home', ['ksSwiper', 'dbServer']);angular.module('initial')
             }
         }
     }]);angular.module('rotasAngularJs')
-    .service('auth', ["session", "$q", "$http", "$state", "appUrls", "msgsService", function(session, $q, $http, $state, appUrls,msgsService) {
+    .service('auth', ["session", "$q", "$http", "$state", "appUrls", "msgsService", function(session, $q, $http, $state, appUrls, msgsService) {
         return {
             login: function(user) {
                 var authProm = $q.defer();
-                // var usuario = { "email": "tiago.santos@bandeiranteslog.com.br", "senha": "123" };
                 $http.post(appUrls.getUrl('appAuth'), user)
                     .then(function(authResult) {
                         authProm.resolve(authResult.data);
                         console.log(authResult.data);
                         session.setData('authData', JSON.stringify(authResult.data));
                     }).catch(function(authError) {
-                        if(authError.data[0]=='invalid_email_or_password'){
-                            authError = msgsService.getMsg('usuario',1);
+                        if (authError.data[0] == 'invalid_email_or_password') {
+                            authError = msgsService.getMsg('usuario', 1);
                         }
                         authProm.reject(authError);
                     });

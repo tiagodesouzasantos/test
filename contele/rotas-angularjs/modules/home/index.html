@@ -1,39 +1,71 @@
 <section id="home" ng-init="init()">
-
     <md-content layout="row">
         <div flex="100">
             <md-toolbar layout-align="center" flex="100">
                 <div class="md-toolbar-tools">
                     <span flex="80">Rotas</span>
                     <md-input-container flex="20" layout="row" layout-align="end ">
-                        <input class="search " type="text " layout-align="start " ng-model="search " title="Busque o usuário " ng-model-options="{ debounce: 200 } " aria-label="Busque o usuário " />
+                        <input class="search " type="text " layout-align="start " ng-model="search " title="Busque uma rota " ng-model-options="{ debounce: 200 } " aria-label="Busque o usuário " />
                         <i class="material-icons ">search</i>
                     </md-input-container>
                 </div>
             </md-toolbar>
             <md-content class="event-details">
-                <md-card ng-repeat="malhaRota in malhasRotas | filter:search">
-                    <span class="md-headline ">{{malhaRota.name}}</span>
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-subhead"><strong>Descritivo:</strong> {{malhaRota.desc | limitTo:limitDesc}}{{malhaRota.desc.length>=limitDesc?'...':''}}</span>
-                            <span class="md-subhead " layout="row">
-                                <i class="material-icons">access_time</i>
-                                <span layout-align="center center ">Das {{malhaRota.horario.inicio}} até {{malhaRota.horario.fim}}</span>
-                            </span>
-                            <span class="md-subhead " layout="row">
-                                <i class="material-icons">location_on</i>
-                                <span layout-align="center center ">{{malhaRota.endereco}} / {{malhaRota.local}}</span>
-                            </span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button ng-click="dialogListaVinculados(malhaRota)" layout="row" layout-align="center center" title="Lista de colaboradores vinculados"><i class="material-icons">format_list_numbered</i></md-button>
-                        <md-button ng-click="addColaboradores(malhaRota)" layout="row" layout-align="center center" title="Adicionar colaboradores ao malhaRota"><i class="material-icons">description</i></md-button>
-                    </md-card-actions>
+                <md-card ng-repeat="routeMesh in routesMesh | filter:search">
+                    <span class="md-headline ">{{routeMesh.name}}</span>
+                    <div layout="row" layout-align="start start" flex="100" layout-wrap>
+                        <div layout="row" layout-align="center center" flex="35" layout-wrap>
+                            <h3 layout="row" layout-align="center center" flex="100">Malha Logistica</h3>
+                            <div layout="row" layout-align="start center " flex="100" ng-repeat="route in routeMesh.routes | filter:search" layout-wrap>
+                                <span><i class="material-icons">location_on</i></span>
+                                <span>
+                                    Partida de {{route.spot_one}} para {{route.spot_two}} distância de {{route.distance}} km
+                                </span>
+                            </div>
+                        </div>
+                        <form name="formCalcRoute" layout="row" layout-align="center center" flex="65" layout-wrap>
+                            <!-- <div layout="row" layout-align="center center" flex="65" layout-wrap> -->
+                            <h3 layout="row" layout-align="center center" flex="100">Faça suas rotas</h3>
+                            <div layout="row" layout-align="start start">
+                                <md-input-container class="md-select-top">
+                                    <label>Partida</label>
+                                    <md-select ng-model="calcRoute.spotOne" required>
+                                        <md-optgroup label="Local partida">
+                                            <md-option ng-repeat="spot in routeMesh.spots | orderBy" ng-value="spot">Local {{spot}}</md-option>
+                                        </md-optgroup>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-align="start start">
+                                <md-input-container class="md-select-top">
+                                    <label>Destino</label>
+                                    <md-select ng-model="calcRoute.spotTwo" required>
+                                        <md-optgroup label="Local destino">
+                                            <md-option ng-repeat="spot in routeMesh.spots | orderBy" ng-value="spot">Local {{spot}}</md-option>
+                                        </md-optgroup>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-align="start start">
+                                <md-input-container>
+                                    <label>Autonomia do seu veiculo</label>
+                                    <input required type="number" step="any" name="autonomy" ng-model="calcRoute.autonomy" min="1" />
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-align="start start">
+                                <md-input-container>
+                                    <label>Valor combustivel litro</label>
+                                    <input required type="number" step="any" name="fuelValues" ng-model="calcRoute.fuelValues" min="1" />
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-align="center start">
+                                <md-button ng-disabled="!formCalcRoute.$valid || (calcRoute.spotOne==calcRoute.spotTwo)" class="md-raised md-primary">Calcular Rota</md-button>
+                            </div>
+                            <!-- </div> -->
+                        </form>
+                    </div>
                 </md-card>
             </md-content>
         </div>
     </md-content>
-
 </section>

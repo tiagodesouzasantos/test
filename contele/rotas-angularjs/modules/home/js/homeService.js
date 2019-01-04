@@ -9,16 +9,18 @@ angular.module('home')
                     }).catch(function(rotasError) {
                         rotasProm.reject(rotasError);
                     });
-                    // $timeout(function() {
-                    // }, 100);
                     return rotasProm.promise;
                 },
-                getTreinamentosDoDia: function() {
-                    var doDiaProm = $q.defer();
-                    $timeout(function() {
-                        doDiaProm.resolve(treinamentosFake);
-                    }, 100);
-                    return doDiaProm.promise;
+                filterOptions: function(routesMash) {
+                    for (var i = 0; i < routesMash.length; i++) {
+                        var spots = [];
+                        routesMash[i].routes.forEach(function(value, key) {
+                            spots.push(value.spot_one);
+                            spots.push(value.spot_two);
+                        });
+                        routesMash[i].spots = spots.filter((v, i, a) => a.indexOf(v) === i)
+                    }
+                    return routesMash;
                 }
             }
         }
