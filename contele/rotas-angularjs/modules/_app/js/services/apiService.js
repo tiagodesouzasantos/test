@@ -1,21 +1,22 @@
 angular.module('rotasAngularJs')
-    .service('api', function(session, $q, $http, appUrls, msgsService) {
+    .service('api', function(session, $q, $http, appUrls, msgsService, dialogService, auth) {
         return {
             post: function(url, params) {
                 var postProm = $q.defer();
-                $http.post(appUrls.getUrl(url), params, this.getHeader())
+                var apiS = this;
+                $http.post(appUrls.getUrl(url) + '?' + this.getToken(), params)
                     .then(function(postResult) {
                         console.log('postResult', postResult);
                         postProm.resolve(postResult);
                     }).catch(function(postError) {
                         console.log('postError', postError);
-                        var postErro = postError.data.error;
-                        postProm.reject(msgsService.getMsg(postErro.module, postErro.msg));
+                        postProm.reject(apiS.getErrors(postError.status, postError.data));
                     });
                 return postProm.promise;
             },
             show: function(url, params) {
                 var getProm = $q.defer();
+                var apiS = this;
                 console.log(appUrls.getUrl(url) + "/" + params);
                 $http.get(appUrls.getUrl(url) + "/" + params)
                     .then(function(getResult) {
@@ -30,8 +31,8 @@ angular.module('rotasAngularJs')
             },
             get: function(url) {
                 var getProm = $q.defer();
-                var authData = JSON.parse(session.getData('authData'));
-                var url = appUrls.getUrl(url) + '?token=' + authData.token.token;
+                // var authData = JSON.parse(session.getData('authData'));
+                var url = appUrls.getUrl(url) + '?' + this.getToken();
                 var apiS = this;
                 $http.get(url).then(function(getResult) {
                     getProm.resolve(getResult.data);
@@ -62,7 +63,14 @@ angular.module('rotasAngularJs')
                     var msg;
                     switch (status) {
                         case 401:
-                            msg = msgsService.getMsg('app', 11);
+                            var confirmeJson = {
+                                "title": "Problemas!",
+                                "content": msgsService.getMsg('app', 11),
+                                "buttonOk": "Ok"
+                            };
+                            dialogService.confirm(confirmeJson).then(function(confirm) {
+                                auth.logout();
+                            });
                             break;
                         default:
                             msg = msgsService.getMsg('app', 3);
@@ -72,6 +80,10 @@ angular.module('rotasAngularJs')
                     console.log('getErrors', error);
                     return msgsService.getMsg('app', 3);
                 }
+            },
+            getToken: function() {
+                var authData = JSON.parse(session.getData('authData'));
+                return 'token=' + authData.token.token;
             }
         }
     })

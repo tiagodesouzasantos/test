@@ -14,6 +14,8 @@ angular.module('rotasAngularJs')
                     "dev": {
                         "appAuth": "http://localhost/apiRoutes/auth/login",
                         "listMaps": "http://localhost/apiRoutes/listMaps",
+                        "calcRoutes": "http://localhost/apiRoutes/calcRoutes",
+                        "routes": "http://localhost/apiRoutes/routes",
                     }
                 };
                 return urlMaps[this.getEnv()][url];

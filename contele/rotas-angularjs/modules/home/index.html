@@ -3,7 +3,13 @@
         <div flex="100">
             <md-toolbar layout-align="center" flex="100">
                 <div class="md-toolbar-tools">
-                    <span flex="80">Rotas</span>
+                    <div flex="80" layout="row" layout-align="start center">
+                        <span>Rotas</span>
+                        <i class="material-icons add" ng-click="newRouteDialog()">
+                            add_box
+                            <md-tooltip md-direction="right">Nova rota</md-tooltip>
+                        </i>
+                    </div>
                     <md-input-container flex="20" layout="row" layout-align="end ">
                         <input class="search " type="text " layout-align="start " ng-model="search " title="Busque uma rota " ng-model-options="{ debounce: 200 } " aria-label="Busque o usuário " />
                         <i class="material-icons ">search</i>
@@ -12,9 +18,16 @@
             </md-toolbar>
             <md-content class="event-details">
                 <md-card ng-repeat="routeMesh in routesMesh | filter:search">
-                    <span class="md-headline ">{{routeMesh.name}}</span>
+                    <span class="md-headline" layout="row" layout-align="start center">
+                        {{routeMesh.name}}
+                        <i class="material-icons add-spot" ng-click="newSpotDialog(routeMesh)">
+                            add_box
+                            <md-tooltip md-direction="right">Novo ponto</md-tooltip>
+                        </i>
+                    </span>
+                    <!-- <span class="md-headline ">{{routeMesh.name}}</span> -->
                     <div layout="row" layout-align="start start" flex="100" layout-wrap>
-                        <div layout="row" layout-align="center center" flex="35" layout-wrap>
+                        <div layout="row" layout-align="center center" flex="40" layout-wrap>
                             <h3 layout="row" layout-align="center center" flex="100">Malha Logistica</h3>
                             <div layout="row" layout-align="start center " flex="100" ng-repeat="route in routeMesh.routes | filter:search" layout-wrap>
                                 <span><i class="material-icons">location_on</i></span>
@@ -23,13 +36,13 @@
                                 </span>
                             </div>
                         </div>
-                        <form name="formCalcRoute" layout="row" layout-align="center center" flex="65" layout-wrap>
+                        <form name="formCalcRoute" layout="row" layout-align="center center" flex="60" layout-wrap>
                             <!-- <div layout="row" layout-align="center center" flex="65" layout-wrap> -->
                             <h3 layout="row" layout-align="center center" flex="100">Faça suas rotas</h3>
                             <div layout="row" layout-align="start start">
                                 <md-input-container class="md-select-top">
                                     <label>Partida</label>
-                                    <md-select ng-model="calcRoute.spotOne" required>
+                                    <md-select ng-model="routeMesh.calcRoute.spotOne" required>
                                         <md-optgroup label="Local partida">
                                             <md-option ng-repeat="spot in routeMesh.spots | orderBy" ng-value="spot">Local {{spot}}</md-option>
                                         </md-optgroup>
@@ -39,7 +52,7 @@
                             <div layout="row" layout-align="start start">
                                 <md-input-container class="md-select-top">
                                     <label>Destino</label>
-                                    <md-select ng-model="calcRoute.spotTwo" required>
+                                    <md-select ng-model="routeMesh.calcRoute.spotTwo" required>
                                         <md-optgroup label="Local destino">
                                             <md-option ng-repeat="spot in routeMesh.spots | orderBy" ng-value="spot">Local {{spot}}</md-option>
                                         </md-optgroup>
@@ -49,17 +62,19 @@
                             <div layout="row" layout-align="start start">
                                 <md-input-container>
                                     <label>Autonomia do seu veiculo</label>
-                                    <input required type="number" step="any" name="autonomy" ng-model="calcRoute.autonomy" min="1" />
+                                    <input required type="number" step="any" name="autonomy" ng-model="routeMesh.calcRoute.autonomy" min="1" />
                                 </md-input-container>
                             </div>
                             <div layout="row" layout-align="start start">
                                 <md-input-container>
                                     <label>Valor combustivel litro</label>
-                                    <input required type="number" step="any" name="fuelValues" ng-model="calcRoute.fuelValues" min="1" />
+                                    <input required type="number" step="any" name="fuelValues" ng-model="routeMesh.calcRoute.fuelValues" min="1" />
                                 </md-input-container>
                             </div>
                             <div layout="row" layout-align="center start">
-                                <md-button ng-disabled="!formCalcRoute.$valid || (calcRoute.spotOne==calcRoute.spotTwo)" class="md-raised md-primary">Calcular Rota</md-button>
+                                <md-button ng-disabled="!formCalcRoute.$valid || (routeMesh.calcRoute.spotOne==routeMesh.calcRoute.spotTwo)" class="md-raised md-primary" ng-click="sendRoute(routeMesh)">
+                                    Calcular Rota
+                                </md-button>
                             </div>
                             <!-- </div> -->
                         </form>

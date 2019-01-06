@@ -14,7 +14,7 @@
     <div flex layout="row">
         <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
             <md-toolbar class="md-theme-indigo">
-                <div layout="row" flex="100" layout-wrap>                    
+                <div layout="row" flex="100" layout-wrap>
                     <div class="menu" flex="20" layout="row" layout-align="end">
                         <i class="material-icons closeMenu" ng-click="toogleSideNav('left')">arrow_back</i>
                     </div>
@@ -22,23 +22,12 @@
                         <p class="name">{{user.name}}</p>
                         <p class="email">{{user.email}}</p>
                     </div>
-                </div>                
+                </div>
             </md-toolbar>
             <md-menu-content>
                 <md-menu-item>
                     <md-button ng-click="goto('home')"><i class="material-icons">home</i>
                         <p>Home</p>
-                    </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                    <md-button ng-disabled="true" ng-click="goto('configs')"><i class="material-icons">directions_run</i>
-                        <p>Treinamentos</p>
-                    </md-button>
-                </md-menu-item>
-                <md-divider></md-divider>
-                <md-menu-item>
-                    <md-button ng-disabled="true" ng-click="goto('configs')"><i class="material-icons">settings</i>
-                        <p>Meus dados</p>
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>

@@ -1,0 +1,29 @@
+<md-dialog id="new-route" flex-gt-xs="40" flex-xs="80" aria-label="New Route">
+    <md-toolbar class="header" layout-align="center" flex="100">
+        <div class="md-toolbar-tools">
+            <span layout-align="start center" layout="row" flex="90">Adicionando uma nova rota</span>
+            <span layout-align="end center" layout="row" flex="10" ng-click="home.closeModal()">X</span>
+        </div>
+    </md-toolbar>
+    <div class="dialog-content" layout="row" flex="100" layout-align="start center" layout-wrap>
+        <form name="newSpot">
+            <md-input-container flex="40">
+                <label>Ponto partida</label>
+                <input required type="text" ng-model="home.route.spot_one" />
+            </md-input-container>
+            <md-input-container flex="40">
+                <label>Ponto chegada</label>
+                <input required type="text" ng-model="home.route.spot_two" />
+            </md-input-container>
+            <md-input-container flex="20">
+                <label>Distancia</label>
+                <input required type="number" ng-model="home.route.distance" />
+            </md-input-container>
+            <div layout="row" flex="100" layout-align="center start">
+                <md-button ng-disabled="!newSpot.$valid" class="md-raised md-primary" ng-click="home.saveNewSpot()">
+                    Salvar
+                </md-button>
+            </div>
+        </form>
+    </div>
+</md-dialog>

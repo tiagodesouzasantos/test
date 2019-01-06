@@ -10,11 +10,7 @@ angular.module('rotasAngularJs', [
     'menu',
     'initial',
     'rzModule',
-    'dbServer',
-    'mapsService',
     'timeService',
-    'materialCalendar',
-    'treinamento',
     'text'
 ])
 
@@ -52,26 +48,16 @@ angular.module('rotasAngularJs', [
 
     // INICIO PUBLICACOES
     .state('home', {
-            parent: 'menu',
-            url: '/home',
-            views: {
-                'main@menu': {
-                    templateUrl: 'modules/home/index.html',
-                    controller: 'homeController as home'
-                }
+        parent: 'menu',
+        url: '/home',
+        views: {
+            'main@menu': {
+                templateUrl: 'modules/home/index.html',
+                controller: 'homeController as home'
             }
-        })
-        .state('treinamento', {
-            parent: 'menu',
-            url: '/treinamento',
-            params: { treinamento: null },
-            views: {
-                'main@menu': {
-                    templateUrl: 'modules/treinamento/index.html',
-                    controller: 'treinamentoController as treinamento'
-                }
-            }
-        })
+        }
+    })
+
 
 
     $urlRouterProvider.otherwise('initial');
@@ -142,78 +128,141 @@ angular.module('home', ['ksSwiper', 'dbServer']);angular.module('initial')
             }
         }]);;angular.module('home')
     .controller('homeController',
-        ["$scope", "homeService", "dialogService", "$rootScope", "session", "$mdDialog", "msgsService", "auth", function($scope, homeService, dialogService, $rootScope, session, $mdDialog, msgsService, auth) {
+        ["$scope", "homeService", "dialogService", "$rootScope", "$mdDialog", "auth", function($scope, homeService, dialogService, $rootScope, $mdDialog, auth) {
+
             $scope.init = function() {
-                $rootScope.showLoading = true;
-                $scope.loadData();
+                $scope.calcRoute = {};
+                $scope.newRoute = "";
+                $scope.routeToNewSpot = {};
+                $scope.route = {};
+                $scope.loadDataScreen();
             }
 
-            $scope.loadData = function() {
-                homeService.getListRotas().then(function(routesResult) {
+            $scope.loadDataScreen = function() {
+                $rootScope.showLoading = true;
+                homeService.getListRoutes().then(function(routesResult) {
                     $rootScope.showLoading = false;
                     $scope.routesMesh = homeService.filterOptions(routesResult);
-                    console.log('routesResult', routesResult);
-                }).catch(function(rotasError) {
-                    console.log('rotasError', rotasError);
+                }).catch(function(routesError) {
                     $rootScope.showLoading = false;
-                    var confirmeJson = {
-                        "title": "Problemas!",
-                        "content": rotasError,
-                        "buttonOk": "Ok"
-                    };
-                    dialogService.confirm(confirmeJson).then(function(confirm) {
-                        auth.logout();
-                    });
                 });
             }
-        }]);;angular.module('menu')
-    .controller('menuController',["$scope", "$mdSidenav", "$log", "$state", "$rootScope", "homeService", "session", function($scope, $mdSidenav, $log, $state, $rootScope, homeService, session) {
-            // GET LOCATION OF USER
-            $scope.init = function() {
-                var authData = JSON.parse(session.getData('authData')); 
-                console.log(authData);
-                $scope.user = authData.user;//listaColaboradores[0];
-            }
+            $scope.sendRoute = function(routeMesh) {
+                $rootScope.showLoading = true;
+                routeMesh
+                // $scope.calcRoute.routes = routeMesh.routes;
+                console.log('$scope.calcRoute', routeMesh);
 
-            $scope.close = function(menuClose) {
-                $mdSidenav(menuClose).close()
-                    .then(function() {
-                        $log.debug("close LEFT is done");
-                    }).catch(function(evt) {
-                        console.log(evt);
+                homeService.apiCalcRoutes(routeMesh)
+                    .then(function(calcResult) {
+                        $rootScope.showLoading = false;
+                        console.log(calcResult);
+                    }).catch(function(calcError) {
+                        $rootScope.showLoading = false;
+                        console.log(calcError);
                     });
-
             }
-
-            $scope.toogleSideNav = function(menuClose) {
-                $mdSidenav(menuClose).toggle();
-                setTimeout(function() {
-                    $scope.$broadcast('reCalcViewDimensions');
-                }, 1)
+            $scope.newRouteDialog = function() {
+                return $mdDialog.show({
+                    controller: ["copyScope", function(copyScope) {
+                        return copyScope;
+                    }],
+                    controllerAs: 'home',
+                    locals: {
+                        copyScope: $scope
+                    },
+                    templateUrl: 'modules/home/new-route.html',
+                    clickOutsideToClose: true
+                });
             }
-
-            $scope.goto = function(state) {
-                if (state == "exit") {
-                    sessionStorage.clear()
-                    $state.go("initial");
-                }
-                $state.go(state);
-                $scope.close('left');
+            $scope.newSpotDialog = function(route) {
+                $scope.routeToNewSpot = route;
+                return $mdDialog.show({
+                    controller: ["copyScope", function(copyScope) {
+                        return copyScope;
+                    }],
+                    controllerAs: 'home',
+                    locals: {
+                        copyScope: $scope
+                    },
+                    templateUrl: 'modules/home/new-spot.html',
+                    clickOutsideToClose: true
+                });
             }
+            $scope.closeModal = function() {
+                $mdDialog.hide();
+            }
+            $scope.saveNewRoute = function() {
+                console.log('$scope.newRoute', $scope.newRoute);
+                $rootScope.showLoading = true;
+                homeService.saveNewRoute({ "name": $scope.newRoute })
+                    .then(function(newRouteResult) {
+                        $rootScope.showLoading = false;
+                        $scope.closeModal();
+                        $scope.init();
+                    }).catch(function(newRouteError) {
+                        $rootScope.showLoading = false;
+                        console.log(newRouteError);
+                    });
+            }
+            $scope.saveNewSpot = function() {
+                $scope.route.map_id = $scope.routeToNewSpot.id;
+                console.log('$scope.newRoute', $scope.route);
+                homeService.saveNewSpot($scope.route)
+                    .then(function(newRouteResult) {
+                        $rootScope.showLoading = false;
+                        $scope.closeModal();
+                        $scope.init();
+                    }).catch(function(newRouteError) {
+                        $rootScope.showLoading = false;
+                        console.log(newRouteError);
+                    });
+            }
+        }]);;angular.module('menu')
+    .controller('menuController', ["$scope", "$mdSidenav", "$log", "$state", "session", function($scope, $mdSidenav, $log, $state, session) {
+        $scope.init = function() {
+            var authData = JSON.parse(session.getData('authData'));
+            $scope.user = authData.user;
+        }
 
-        }]
-    );;angular.module('home')
+        $scope.close = function(menuClose) {
+            $mdSidenav(menuClose).close()
+                .then(function() {
+                    $log.debug("close LEFT is done");
+                }).catch(function(evt) {
+                    console.log(evt);
+                });
+
+        }
+
+        $scope.toogleSideNav = function(menuClose) {
+            $mdSidenav(menuClose).toggle();
+            setTimeout(function() {
+                $scope.$broadcast('reCalcViewDimensions');
+            }, 1)
+        }
+
+        $scope.goto = function(state) {
+            if (state == "exit") {
+                sessionStorage.clear()
+                $state.go("initial");
+            }
+            $state.go(state);
+            $scope.close('left');
+        }
+
+    }]);;angular.module('home')
     .service('homeService',
         ["$q", "$http", "api", "session", "$timeout", function($q, $http, api, session, $timeout) {
             return {
-                getListRotas: function() {
-                    var rotasProm = $q.defer();
-                    api.get('listMaps').then(function(rotasResult) {
-                        rotasProm.resolve(rotasResult);
-                    }).catch(function(rotasError) {
-                        rotasProm.reject(rotasError);
+                getListRoutes: function() {
+                    var routesProm = $q.defer();
+                    api.get('listMaps').then(function(routesResult) {
+                        routesProm.resolve(routesResult);
+                    }).catch(function(routesError) {
+                        routesProm.reject(routesError);
                     });
-                    return rotasProm.promise;
+                    return routesProm.promise;
                 },
                 filterOptions: function(routesMash) {
                     for (var i = 0; i < routesMash.length; i++) {
@@ -225,6 +274,40 @@ angular.module('home', ['ksSwiper', 'dbServer']);angular.module('initial')
                         routesMash[i].spots = spots.filter((v, i, a) => a.indexOf(v) === i)
                     }
                     return routesMash;
+                },
+                apiCalcRoutes: function(routeToCalc) {
+                    var calcRouteProm = $q.defer();
+                    console.log('routeToCalc', routeToCalc);
+                    api.post("calcRoutes", routeToCalc).then(function(calcResult) {
+                        console.log('calcResult', calcResult);
+                        calcRouteProm.resolve(calcResult);
+                    }).catch(function(calcError) {
+                        calcRouteProm.reject(calcError);
+                        console.log('calcError', calcError);
+                    });
+                    return calcRouteProm.promise;
+                },
+                saveNewRoute: function(newRoute) {
+                    var newRouteProm = $q.defer();
+                    api.post("listMaps", newRoute).then(function(newRouteResult) {
+                        console.log('newRouteResult', newRouteResult);
+                        newRouteProm.resolve(newRouteResult);
+                    }).catch(function(newRouteError) {
+                        newRouteProm.reject(newRouteError);
+                        console.log('newRouteError', newRouteError);
+                    });
+                    return newRouteProm.promise;
+                },
+                saveNewSpot: function(newSpot) {
+                    var newSpotProm = $q.defer();
+                    api.post("routes", newSpot).then(function(newSpotResult) {
+                        console.log('newSpotResult', newSpotResult);
+                        newSpotProm.resolve(newSpotResult);
+                    }).catch(function(newSpotError) {
+                        newSpotProm.reject(newSpotError);
+                        console.log('newSpotError', newSpotError);
+                    });
+                    return newSpotProm.promise;
                 }
             }
         }]
@@ -317,6 +400,8 @@ angular.module('home', ['ksSwiper', 'dbServer']);angular.module('initial')
                     "dev": {
                         "appAuth": "http://localhost/apiRoutes/auth/login",
                         "listMaps": "http://localhost/apiRoutes/listMaps",
+                        "calcRoutes": "http://localhost/apiRoutes/calcRoutes",
+                        "routes": "http://localhost/apiRoutes/routes",
                     }
                 };
                 return urlMaps[this.getEnv()][url];
@@ -444,7 +529,7 @@ angular.module('home', ['ksSwiper', 'dbServer']);angular.module('initial')
                             "8": "Não foram encontrados dados para os filtros selecionados!",
                             "10": "Nenhum dado encontrado!",
                             "11": "Sua sessão expirou, por favor faça o login novamente!"
-                        }
+                        },
                     },
                     "ingles": {
                         "usuario": {

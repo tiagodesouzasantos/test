@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories\Routes;
 use App\Models\ListMaps;
+use Illuminate\Http\Request;
 
 class ListMapsRepository{
 
@@ -14,10 +15,15 @@ class ListMapsRepository{
         return (!$listMaps)? response()->json(['message'=>'Record not found'],404) : response()->json($listMaps);
     }
     public function store(Request $request){
-        $listMaps = new ListMaps();
-        $listMaps->fill($request->all());
-        $listMaps->save();
-        return response()->json($listMaps,201);
+        try {
+            $listMaps = new ListMaps();
+            $listMaps->fill($request->all());
+            $listMaps->save();
+            return response()->json($listMaps, 201);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
+        
     }
     public function update(Request $request, $id){
         $listMaps = ListMaps::find($id);

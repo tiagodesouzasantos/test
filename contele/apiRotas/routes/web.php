@@ -21,10 +21,12 @@ Route::group(['prefix' => 'apiRoutes'], function () {
     Route::group(['middleware' => 'jwt.auth'], function () {
         Route::resource('userRoutes', 'UserRoutesController');
         Route::resource('listMaps', 'ListMapsController');
+        Route::resource('routes', 'Routes\RoutesController');
         Route::get('user', 'UserController@getAuthUser');
+        Route::post('calcRoutes', 'Routes\CalcRoutesController@calcRoutes');
     });
             
-        });
+});
 Route::get('/', function () {
     return redirect('apiRoutes');
     // return view('welcome');

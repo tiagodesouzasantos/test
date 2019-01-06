@@ -10,11 +10,7 @@ angular.module('rotasAngularJs', [
     'menu',
     'initial',
     'rzModule',
-    'dbServer',
-    'mapsService',
     'timeService',
-    'materialCalendar',
-    'treinamento',
     'text'
 ])
 
@@ -52,26 +48,16 @@ angular.module('rotasAngularJs', [
 
     // INICIO PUBLICACOES
     .state('home', {
-            parent: 'menu',
-            url: '/home',
-            views: {
-                'main@menu': {
-                    templateUrl: 'modules/home/index.html',
-                    controller: 'homeController as home'
-                }
+        parent: 'menu',
+        url: '/home',
+        views: {
+            'main@menu': {
+                templateUrl: 'modules/home/index.html',
+                controller: 'homeController as home'
             }
-        })
-        .state('treinamento', {
-            parent: 'menu',
-            url: '/treinamento',
-            params: { treinamento: null },
-            views: {
-                'main@menu': {
-                    templateUrl: 'modules/treinamento/index.html',
-                    controller: 'treinamentoController as treinamento'
-                }
-            }
-        })
+        }
+    })
+
 
 
     $urlRouterProvider.otherwise('initial');

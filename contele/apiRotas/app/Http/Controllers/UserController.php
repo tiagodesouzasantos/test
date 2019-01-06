@@ -38,7 +38,7 @@ class UserController extends Controller{
         return response()->json([
             "token"=>compact('token'),
             "user"=>$userRepository->findByEmail($credentials['email'])
-            ]);
+        ]);
     }
     public function getAuthUser(Request $request){
         $user = JWTAuth::toUser($request->token);

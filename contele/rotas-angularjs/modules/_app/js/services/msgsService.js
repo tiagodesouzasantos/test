@@ -28,7 +28,7 @@ angular.module('rotasAngularJs')
                             "8": "Não foram encontrados dados para os filtros selecionados!",
                             "10": "Nenhum dado encontrado!",
                             "11": "Sua sessão expirou, por favor faça o login novamente!"
-                        }
+                        },
                     },
                     "ingles": {
                         "usuario": {
