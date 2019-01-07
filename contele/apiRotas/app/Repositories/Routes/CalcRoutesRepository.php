@@ -99,5 +99,9 @@ class CalcRoutesRepository{
         return $routesToTwoSpot;
     }
 
+    public function calcValueRoute($autonomy,$kmRoute,$fuelValue){
+        return (($kmRoute * 1) / $autonomy)*$fuelValue
+    }
+
 }
 ?>
