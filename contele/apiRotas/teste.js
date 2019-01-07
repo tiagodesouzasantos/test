@@ -27,13 +27,3 @@ var startPoints = getStartPoints(routes, spotOne, spotTwo);
 // console.log(startPoints);
 // var finalRoutes = runStartRoutes(startPoints, spotOne, spotTwo, routes);
 // console.log(finalRoutes);
-
-var factor = function(number) {
-    var result = 1;
-    var count;
-    for (count = number; count > 1; count--) {
-        result *= count;
-    }
-    return result;
-};
-console.log(factor(9));

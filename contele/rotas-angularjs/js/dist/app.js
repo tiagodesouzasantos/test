@@ -149,7 +149,6 @@ angular.module('home', ['ksSwiper', 'dbServer']);angular.module('initial')
             }
             $scope.sendRoute = function(routeMesh) {
                 $rootScope.showLoading = true;
-                routeMesh
                 // $scope.calcRoute.routes = routeMesh.routes;
                 console.log('$scope.calcRoute', routeMesh);
 

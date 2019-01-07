@@ -7,7 +7,6 @@ class ListMapsRepository{
 
     public function listAll(){
         $listMaps = ListMaps::all()->load('routes'); 
-        // return response()->json($listMaps);
         return $listMaps;
     }
     public function show($id){

@@ -9,11 +9,13 @@ class CalcRoutesRepository{
         try{
             $spots = array(
                 "mapId" => $infoRoutes['routes'][0]['map_id'],
-                "spotOne" => $infoRoutes['spotOne'],
-                "spotTwo" => $infoRoutes['spotTwo']
+                "spotOne" => $infoRoutes['calcRoute']['spotOne'],
+                "spotTwo" => $infoRoutes['calcRoute']['spotTwo'],
+                "autonomy" => $infoRoutes['calcRoute']['autonomy'],
+                "fuelValues" => $infoRoutes['calcRoute']['fuelValues']
             );
             $foundRoutes = $this->foundRoutesSpotToSpot($spots);
-            $bestRoute = $this->findBestRoute($foundRoutes, $spots['spotOne'], $spots['spotTwo']);
+            $bestRoute = $this->findBestRoute($foundRoutes, $spots);
             return array("foundRoutes"=>$foundRoutes, "bestRoute"=>$bestRoute);
         }catch(\Exception $e){
             Throw new \Exception($e->getMessage());
@@ -22,20 +24,20 @@ class CalcRoutesRepository{
     }
     public function foundRoutesSpotToSpot(Array $spots){
         try {
-            return Routes::whereIn('spot_one', [$spots['spotOne'], $spots['spotTwo']])
-                ->OrwhereIn('spot_two', [$spots['spotOne'], $spots['spotTwo']])
-                ->where('map_id', '=', $spots['mapId'])
-                ->get();
+            return Routes::where('map_id', '=', $spots['mapId'])->get();
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
     }
-    public function findBestRoute($routes, $spotOne, $spotTwo){
+    public function findBestRoute($routes, $spots){
         try {
-            $directRoute = $this->directRoute($routes, $spotOne, $spotTwo);
-            $pointsRoute = $this->pointsRoute($routes, $spotOne, $spotTwo);
-            
-            return array("directRoute"=>$directRoute, "pointsRoute"=>$pointsRoute);
+            $directRoute = $this->directRoute($routes, $spots['spotOne'], $spots['spotTwo']);
+            $pointsRoute = $this->pointsRoute($routes, $spots['spotOne'], $spots['spotTwo']);
+            $listRoutes = array_merge($directRoute, $pointsRoute);
+            for($i=0;$i<count($listRoutes);$i++){
+
+            }
+            return array("listRoutes"=> $listRoutes);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
@@ -57,39 +59,44 @@ class CalcRoutesRepository{
     }
 
     public function pointsRoute($routes, $spotOne, $spotTwo){
+        $mapedRoute = [];
         $routesToTwoSpot = [];
-        $routesSpotOne = [];
-        $routesSpotTwo = [];
-        //find spot one
         for ($i = 0; $i < count($routes); $i++) {
             if(!($spotOne == $routes[$i]['spot_one'] && $spotTwo == $routes[$i]['spot_two'])){
                 if($spotOne == $routes[$i]['spot_one']){
-                    $routes[$i]['listRoutesMap'] = $this->findNextPoint($routes, $i, $spotTwo);
-                    array_push($routesSpotOne,$routes[$i]);
-                    unset($routes[$i]);
-                    $routes = array_values($routes);
+                    $routes[$i]['routes']=[];
+                    $listRoute = array(
+                        "spot_one" => $routes[$i]['spot_one'],
+                        "spot_two" => $routes[$i]['spot_two'],
+                        "distance" => $routes[$i]['distance']
+                    );
+                    $listRoute["list_routes"] = [$listRoute];
+                    array_push($routesToTwoSpot, $listRoute);
+                    array_push($mapedRoute,$i);
                 }
             }
-            
         }
+        $last = [];
+        for($i=0;$i<count($routesToTwoSpot);$i++){
+            $last = $routesToTwoSpot[$i]['spot_two'];
+            for($x=0;$x<count($routes);$x++){
+                if($last == $routes[$x]['spot_one']){
+                    if(!in_array($x, $mapedRoute)){
+                        $last = $routes[$x]['spot_two'];
+                        array_push($routesToTwoSpot[$i]['list_routes'], array(
+                            "spot_one" => $routes[$x]['spot_one'],
+                            "spot_two" => $routes[$x]['spot_two'],
+                            "distance" => $routes[$x]['distance'],
+                        ));
+                    }
+                    if($spotTwo == $routes[$x]['spot_two']){
+                        break;
+                    }
+                }
+            }
+        }
+        
         return $routesToTwoSpot;
-    }
-
-    public function findNextPoint($routes, $startFind, $spotTwo){
-        $listRoutesMap = [];
-        for ($i = $startFind; $i < count($routes); $i++) {
-            if($i == $startFind){
-                $next = $routes[$i]['spot_two'];
-            }else{
-                if($routes[$i]['spot_one']==$next){
-                    $next = $routes[$i]['spot_two'];
-                    array_push($listRoutesMap, $routes[$i]);
-                    unset($routes[$i]);
-                    array_values($routes);
-                }
-            }
-        }
-        return $listRoutesMap;
     }
 
 }

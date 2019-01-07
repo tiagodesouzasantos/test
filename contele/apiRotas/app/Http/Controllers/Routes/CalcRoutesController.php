@@ -13,9 +13,7 @@ class CalcRoutesController extends Controller{
         try{
             $calcRoutesRepository = new CalcRoutesRepository();
             $resultCalc = $calcRoutesRepository->calc($request->all());
-            return response()->json([
-                "data" => $resultCalc
-            ]);
+            return response()->json($resultCalc);
         }catch(Exception $e){
             return response()->json(array("message"=>$e->getMessage()), 500);
         }

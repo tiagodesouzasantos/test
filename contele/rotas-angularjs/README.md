@@ -1,7 +1,12 @@
 ### Preparação
 -----
+Escolhi o angularjs devido ser uma linguagem de maior dominio e por eu já possuir um projeto esqueleto
+onde ganho tempo para desenvolver novos projetos.
+-----
+- Precisaremos do nodejs instalado em nossa máquina, para instalar basta seguir este link.:
+https://nodejs.org/en/download/
 
-Dentro do diretório **angular**, execute o seguinte comando no terminal:
+Dentro do diretório **rotas-angularjs**, execute o seguinte comando no terminal:
 
 ```bash
 $ npm install -g gulp

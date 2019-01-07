@@ -1,7 +1,7 @@
 {
-    "name": "band",
-    "version": "2.0.0",
-    "description": "QuickStart",
+    "name": "Contele",
+    "version": "1.0.0",
+    "description": "Rotas",
     "main": "gulpfile.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
